@@ -1,0 +1,31 @@
+{% extends 'User/templates.html' %}
+
+{% block content %}
+    <h1>Name: {{ profile.user }}</h1>
+    Welcome to your profile page!
+    <p>{{ profile.email }}</p>
+    <p>Rank is: {{ profile.militaryrank }}</p>
+    <p>XP is: {{ profile.xp }}</p>
+    <p>Your level is: {{ profile.level }}</p>
+    <p>Your nation is: <a href="{% url 'Country_page' profile.country.id %}">{{ profile.country }}</a></p>
+    <p>You are currently in: <a href="{% url 'region_page' profile.region.code %}">{{ profile.region }}</a>, {{ profile.region.country }}</p>
+
+{% if profile.user == my_profile.user %}
+<h2> Your full currency balance is as below:</h2>
+{% for i in balance %}
+    <p>{{ i.currency }} {{ i.Balance }}</p>
+{% endfor %}
+<!--<p>Increase your balance by clicking this button:</p>-->
+<!--<form type="submit" method="post" class="form-group">-->
+<!--	{% csrf_token %}-->
+<!--    <input type="submit" name="Increase money"/>-->
+<!--</form>-->
+{% endif %}
+
+<h3>Friends:</h3>
+
+{% for i in profile.friends.all %}
+<a href="{% url 'profile' i.user.id %}">{{ i }}</a>
+{% endfor %}
+
+{% endblock %}

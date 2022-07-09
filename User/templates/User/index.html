@@ -1,0 +1,16 @@
+{% extends 'User/templates.html' %}
+{% block content %}
+<!----create a div which shows the user profile. -->
+<div>
+    <h1>{{ profile.name }}</h1>
+    Welcome to the homepage of Nation States!
+    Join a nation by clicking here:
+
+<p>
+    <a href="{% url 'login' %}">Log In</a>
+</p>
+</div>
+<!---->
+<!---->
+
+{% endblock content %}
