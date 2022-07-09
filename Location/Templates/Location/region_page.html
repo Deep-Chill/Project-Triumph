@@ -1,0 +1,10 @@
+{% extends 'User/templates.html' %}
+
+{% block content %}
+
+<p>{{ country.name }}</p>
+<p>Region:</p>
+<p>{{ region.name }}</p>
+
+Number of people in {{ region.code }}: {{ region.num_users }}
+{% endblock content %}
