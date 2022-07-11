@@ -3,6 +3,9 @@ from .models import Profile, UserBalance
 from Media.models import SocialPosts
 from django.contrib.auth.views import LogoutView, LoginView
 from . import forms
+from Location.models import Region
+# from .forms import NewUserForm, UserCreationForm, SocialPost
+
 
 class logout(LogoutView):
     next_page = '/'
@@ -34,20 +37,23 @@ def increase_usd(request, id):
 
 # Create your views here.
 def index(request):
-    form = forms.SocialPost()
     if request.user.is_authenticated:
         user = request.user
+        form = forms.SocialPostForm()
         profile = Profile.objects.get(user=user)
         posts = SocialPosts.objects.filter(user__in=profile.friends.all()) | (SocialPosts.objects.filter(user=profile))
+        if request.method == "POST":
+            form = forms.SocialPostForm(request.POST)
+            if form.is_valid():
+                social_post = form.save(commit=False)
+                social_post.user = profile
+                form.save()
         context = {
             'user': user,
             'profile': profile,
-            'posts': posts.order_by('-creation_date')
+            'posts': posts.order_by('-creation_date'),
+            'form': form,
         }
-        if request.method is "POST":
-            form = forms.SocialPost(request.POST)
-            if form.is_valid():
-                post = form.save()
         return render(request, 'User/HomePage.html', context)
     else:
         return render(request, 'User/index.html')
@@ -69,6 +75,12 @@ def Profile_page(request, id):
         return render(request, 'User/profile.html', context)
     else:
         return render(request, 'User/index.html')
+
+def load_regions(request):
+    country_id = request.GET.get('country')
+    regions = Region.objects.filter(country_id=country_id).order_by('name')
+    return render(request, 'User/city_dropdown_list_options.html', {'regions': regions})
+
 
 def register(request):
     form = forms.NewUserForm()

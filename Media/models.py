@@ -1,7 +1,9 @@
 from django.db import models
 from User.models import Profile
+from Location.models import Country
 
 class Newspaper(models.Model):
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     name_of_newspaper = models.CharField(max_length=100)
     date_created = models.DateTimeField(auto_now_add=True)
     owners = models.ManyToManyField(Profile, related_name='newspapers')
@@ -58,7 +60,7 @@ class Comment(models.Model):
 
 class SocialPosts(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, default='')
-    text = models.TextField(max_length=240)
+    text = models.CharField(max_length=240)
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

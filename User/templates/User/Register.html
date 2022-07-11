@@ -4,12 +4,29 @@
 <!-- creating a user registration form -->
 <div class="container py-5">
 	<h1>Register</h1>
-    <form method="POST" class="form-group">
+    <form method="POST" class="form-group" id="UserProfileForm" data-region-url="{% url 'ajax_load_regions' %}" novalidate>
 	{% csrf_token %}
 	{{ form|crispy }}
 	{{ profile_form|crispy }}
 	<button type="submit" class="btn btn-success">Register</button>
     </form>
+	<script>
+    $("#id_country").change(function () {
+      var url = $("#UserProfileForm").attr("data-region-url");  // get the url of the `load_regions` view
+      var countryId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/User/ajax/load-region/)
+        data: {
+          'country': countryId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_region").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
 	<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
 </div>
 

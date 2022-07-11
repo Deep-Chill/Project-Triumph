@@ -2,6 +2,7 @@ from django.db import models
 from Location.models import Country
 from django.contrib.auth.models import User
 
+# Remember to actually create currencies for countries before creating user profiles for those countries!
 class Currency(models.Model):
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=100)

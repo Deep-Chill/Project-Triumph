@@ -7,4 +7,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('logout/', views.logout.as_view(), name='logout'),
     path('login/', views.login.as_view(), name='login'),
+    path('ajax/load-regions/', views.load_regions, name='ajax_load_regions'),
 ]
