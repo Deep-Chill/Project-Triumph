@@ -2,12 +2,22 @@ from django.db import models
 import datetime
 
 class Country(models.Model):
+    government_types = (
+        ('DE', 'Democracy'),
+        ('DD', 'Direct democracy'),
+        ('DC', 'Dictatorship')
+    )
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=3)
-    sales_tax = models.DecimalField(max_digits=4, decimal_places=2)
-    income_tax = models.DecimalField(max_digits=4, decimal_places=2)
+    sales_tax = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+    income_tax = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+    import_tax = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+    trade_license_fees = models.IntegerField(default=0)
+    minimum_wage = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     gold_amount = models.IntegerField(default=0)
     Currency_amount = models.IntegerField(default=10)
+    free_trade_agreements = models.ManyToManyField('self', symmetrical=True, blank=True, null=True)
+    government_type = models.CharField(max_length=100, choices=government_types)
 
     def __str__(self):
         return self.name
